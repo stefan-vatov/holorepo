@@ -1,11 +1,10 @@
-use std::path::PathBuf;
 
-use clap::{Command, Parser, Subcommand};
+
+use clap::{Parser, Subcommand};
 use omnirepo_lib::{
     clone::clone::clone_repo,
     config::{manager::GlobalConfigManager, parser::Repositories},
     run::run::run_command,
-    *,
 };
 
 #[derive(Debug, Parser)]
@@ -66,7 +65,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let config_file = dirs::home_dir()
         .expect("Could not find home directory")
         .join(".omnirepo");
-    let file = std::fs::File::open(&config_file)
+    let file = std::fs::File::open(config_file)
         .map_err(|e| format!("Could not open config file: {}", e))?;
     let config: Repositories =
         serde_yaml::from_reader(file).map_err(|e| format!("Error parsing YAML file: {}", e))?;
@@ -98,10 +97,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             template_file,
         } => {
             println!("Syncing file: {}", file);
-            if url != None {
+            if url.is_some() {
                 println!("Syncing from: {}", url.unwrap());
             }
-            if template_file != None {
+            if template_file.is_some() {
                 println!("Syncing with template: {}", template_file.unwrap());
             }
             // sync_file(file, url, template_file);
