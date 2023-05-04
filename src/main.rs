@@ -19,10 +19,19 @@ enum Commands {
         #[arg(short, long, help = "The name of the repository")]
         name: String,
     },
-    #[command(arg_required_else_help = true, about = "Clone a group of repositories")]
+    #[command(
+        arg_required_else_help = true,
+        about = "Clone a group of repositories based on tags"
+    )]
     Clone {
-        #[arg(short, long, help = "The name of the group to clone")]
-        group: String,
+        #[arg(
+            short,
+            long,
+            use_value_delimiter = true,
+            value_delimiter = ',',
+            help = "The names of the tags to clone"
+        )]
+        tags: Vec<String>,
 
         #[arg(
             short,
@@ -75,12 +84,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("Creating new repo: {}", name);
             //new_repo(name);
         }
-        Commands::Clone { group, destination } => {
-            println!("Cloning group: {}", group);
-            clone_repo(cfg_mgr, &group, destination)?;
-            // let repos = cfg_mgr.get_by_tag(&group);
-            // println!("{:?}", repos);
-            // clone_group(group);
+        Commands::Clone { tags, destination } => {
+            println!("Cloning tags: {:?}", tags);
+            clone_repo(cfg_mgr, &tags, destination)?;
         }
         Commands::Run {
             command,
