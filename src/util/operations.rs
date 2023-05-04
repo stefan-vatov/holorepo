@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use crate::config::manager::GlobalConfigManager;
 
-pub fn get_repos_from_tags(tags: &Vec<String>, cfg_mgr: &GlobalConfigManager) -> Vec<String> {
+pub fn get_repos_from_tags(tags: &[String], cfg_mgr: &GlobalConfigManager) -> Vec<String> {
     dedupe_vec(
         tags.iter()
             .flat_map(|tag| cfg_mgr.get_url_by_tag(tag))
@@ -10,7 +10,7 @@ pub fn get_repos_from_tags(tags: &Vec<String>, cfg_mgr: &GlobalConfigManager) ->
     )
 }
 
-pub fn get_dest_from_tags(tags: &Vec<String>, cfg_mgr: &GlobalConfigManager) -> Vec<String> {
+pub fn get_dest_from_tags(tags: &[String], cfg_mgr: &GlobalConfigManager) -> Vec<String> {
     dedupe_vec(
         tags.iter()
             .flat_map(|tag| cfg_mgr.get_dest_by_tag(tag))
