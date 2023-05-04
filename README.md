@@ -1,6 +1,8 @@
 # Omnirepo
 
-Omnirepo is a command-line tool for managing multiple Git repositories with ease. It allows you to organize, clone, and run commands in multiple repositories simultaneously. Omnirepo is especially useful for developers who work with multiple repositories, making the workflow more efficient and streamlined.
+>This tool is currently in its early stages of development. You are welcome to use it if it appears beneficial for your needs; however, please be prepared to encounter rough spots.
+
+Omnirepo is a command-line tool for managing multiple Git repositories. It allows you to organize, clone, and run commands in multiple repositories simultaneously. Omnirepo is especially useful for developers who work with multiple repositories, making the workflow more efficient and streamlined.
 
 ## Table of Contents
 
@@ -24,7 +26,7 @@ Omnirepo is a command-line tool for managing multiple Git repositories with ease
 - Manage multiple Git repositories from a single config file.
 - Clone repositories in parallel.
 - Run commands in each repository simultaneously.
-- Synchronize files across repositories.
+- Synchronize files across repositories. (TODO)
 
 ## Installation
 
@@ -55,7 +57,7 @@ Options:
 
 ### Config File
 
-Create a `.omnirepo` file in your user's home directory with the following format (example):
+Create a `.omnirepo.yaml` file in your user's home directory with the following format (example):
 
 ```yml
 ---
@@ -79,6 +81,7 @@ repositories:
 
 ### new
 
+(TODO)
 Create a new repository.
 
 ### clone
@@ -91,6 +94,7 @@ Run a command in each repository.
 
 ### sync
 
+(TODO)
 Sync a file across all repositories.
 
 ## Contributing

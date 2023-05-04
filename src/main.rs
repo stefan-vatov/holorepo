@@ -1,5 +1,3 @@
-
-
 use clap::{Parser, Subcommand};
 use omnirepo_lib::{
     clone::clone::clone_repo,
@@ -64,7 +62,7 @@ enum Commands {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let config_file = dirs::home_dir()
         .expect("Could not find home directory")
-        .join(".omnirepo");
+        .join(".omnirepo.yaml");
     let file = std::fs::File::open(config_file)
         .map_err(|e| format!("Could not open config file: {}", e))?;
     let config: Repositories =
