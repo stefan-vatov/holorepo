@@ -16,7 +16,7 @@ use crate::{
 
 pub fn clone_repo(
     cfg_mgr: GlobalConfigManager,
-    tags: &Vec<String>,
+    tags: &[String],
     destination: Option<String>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let repos = get_repos_from_tags(tags, &cfg_mgr);

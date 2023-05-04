@@ -39,7 +39,7 @@ impl RepoConfigManager {
         Self { config }
     }
 
-    pub fn get_dirs(&self) -> &Vec<String> {
+    pub fn get_dirs(&self) -> &[String] {
         &self.config.dirs
     }
 }
