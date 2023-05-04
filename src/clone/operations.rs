@@ -9,15 +9,18 @@ use duct::cmd;
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::prelude::*;
 
-use crate::config::{manager::GlobalConfigManager, parser::RepoConfig};
+use crate::{
+    config::{manager::GlobalConfigManager, parser::RepoConfig},
+    util::operations::{get_dest_from_tags, get_repos_from_tags},
+};
 
 pub fn clone_repo(
     cfg_mgr: GlobalConfigManager,
-    tag: &str,
+    tags: &Vec<String>,
     destination: Option<String>,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let repos = cfg_mgr.get_url_by_tag(tag);
-    let dests = cfg_mgr.get_dest_by_tag(tag);
+    let repos = get_repos_from_tags(tags, &cfg_mgr);
+    let dests = get_dest_from_tags(tags, &cfg_mgr);
 
     let dest = destination.unwrap_or(".".into());
 

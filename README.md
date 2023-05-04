@@ -45,7 +45,7 @@ Usage: omnirepo <COMMAND>
 
 Commands:
   new    Create a new repository
-  clone  Clone a group of repositories
+  clone  Clone a group of repositories based on tags
   run    Run a command in each repository
   sync   Sync a file across all repositories
   help   Print this message or the help of the given subcommand(s)
@@ -86,7 +86,7 @@ Create a new repository.
 
 ### clone
 
-Clone a group of repositories.
+Clone a group of repositories based on tags.
 
 ### run
 
