@@ -1,8 +1,8 @@
 use clap::{Parser, Subcommand};
 use omnirepo_lib::{
-    clone::clone::clone_repo,
+    clone::operations::clone_repo,
     config::{manager::GlobalConfigManager, parser::Repositories},
-    run::run::run_command,
+    run::operations::run_command,
 };
 
 #[derive(Debug, Parser)]
