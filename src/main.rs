@@ -3,7 +3,6 @@ use std::path::PathBuf;
 use clap::{Parser, Subcommand};
 use omnirepo_lib::{
     clone::operations::clone_repo,
-    config::{manager::GlobalConfigManager, parser::Repositories},
     run::operations::run_command,
     util::operations::{load_config, load_config_default},
 };
