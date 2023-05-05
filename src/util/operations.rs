@@ -29,7 +29,7 @@ fn dedupe_vec(combined: Vec<String>) -> Vec<String> {
 }
 
 pub fn load_config(config_location: &PathBuf) -> Result<GlobalConfigManager, Box<dyn Error>> {
-    let config = load_config_from_file(&config_location)?;
+    let config = load_config_from_file(config_location)?;
 
     Ok(GlobalConfigManager::new(config.repositories))
 }

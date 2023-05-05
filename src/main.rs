@@ -5,7 +5,7 @@ use omnirepo_lib::{
     clone::operations::clone_repo,
     config::{manager::GlobalConfigManager, parser::Repositories},
     run::operations::run_command,
-    util::operations::{load_config_default, load_config},
+    util::operations::{load_config, load_config_default},
 };
 
 #[derive(Debug, Parser)]
@@ -83,7 +83,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let cfg_mgr = match args.config.as_deref() {
         Some(config_location) => load_config(&PathBuf::from(config_location)),
-        None => load_config_default()
+        None => load_config_default(),
     }?;
 
     match args.command {
