@@ -1,14 +1,24 @@
+use std::path::PathBuf;
+
 use clap::{Parser, Subcommand};
 use omnirepo_lib::{
     clone::operations::clone_repo,
     config::{manager::GlobalConfigManager, parser::Repositories},
     run::operations::run_command,
+    util::operations::{load_config_default, load_config},
 };
 
 #[derive(Debug, Parser)]
 #[clap(name = "omnirepo", version = "0.1.0", author = "")]
 #[command(about = "A tool for managing multiple git repositories", long_about = None)]
 struct Cli {
+    #[arg(
+        short,
+        long,
+        help = "Point to a .omnirepo.yaml or a directory containing config"
+    )]
+    config: Option<String>,
+
     #[command(subcommand)]
     command: Commands,
 }
@@ -69,15 +79,12 @@ enum Commands {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config_file = dirs::home_dir()
-        .expect("Could not find home directory")
-        .join(".omnirepo.yaml");
-    let file = std::fs::File::open(config_file)
-        .map_err(|e| format!("Could not open config file: {}", e))?;
-    let config: Repositories =
-        serde_yaml::from_reader(file).map_err(|e| format!("Error parsing YAML file: {}", e))?;
-    let cfg_mgr = GlobalConfigManager::new(config.repositories);
     let args = Cli::parse();
+
+    let cfg_mgr = match args.config.as_deref() {
+        Some(config_location) => load_config(&PathBuf::from(config_location)),
+        None => load_config_default()
+    }?;
 
     match args.command {
         Commands::New { name } => {
