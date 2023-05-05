@@ -6,5 +6,5 @@ on:
       - main
 
 jobs:
-  bump:
+  bump_tag:
     uses: stefan-vatov/gh-workflows/.github/workflows/bump-and-tag.yml@main
