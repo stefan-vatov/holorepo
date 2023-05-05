@@ -1,0 +1,10 @@
+name: hooks
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint_test:
+    uses: stefan-vatov/gh-workflows/.github/workflows/bump-and-tag.yml@main

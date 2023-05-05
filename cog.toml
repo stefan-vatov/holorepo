@@ -1,0 +1,21 @@
+branch_whitelist = [ "main" ]
+ignore_merge_commits = true
+pre_bump_hooks = [
+    "echo {{version}}",
+    "cargo build --release",
+    "cargo set-version {{version}}"
+]
+post_bump_hooks = ["git push", "git push origin {{version}}"]
+
+[commit_types]
+hotfix = { changelog_title = "Hotfixes" }
+test = { changelog_title = "Test" }
+ci = { changelog_title = "CI" }
+
+[changelog]
+path = "CHANGELOG.md"
+template="remote"
+remote="https://github.com/stefan-vatov/omnirepo"
+repository="omnirepo"
+owner="stefan.vatov"
+authors = [ { signature = "Stefan Vatov", username = "stefan-vatov" } ]
