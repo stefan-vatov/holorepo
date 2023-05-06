@@ -18,4 +18,7 @@ template="remote"
 remote="https://github.com/stefan-vatov/omnirepo"
 repository="omnirepo"
 owner="stefan.vatov"
-authors = [ { signature = "Stefan Vatov", username = "stefan-vatov" } ]
+authors = [
+    { signature = "Stefan Vatov", username = "stefan-vatov" },
+    { signature = "V", username = "aleri" }
+]
