@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [0.2.0](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/compare/0.1.0..0.2.0) - 2023-05-07
+#### Features
+- add create new repo capability (#7) - ([34a0800](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/commit/34a080089c74282fe56cc6f7f03362078ac1a4bc)) - [@stefan-vatov](https://https://github.com/stefan-vatov/omnirepo/stefan-vatov)
+
+- - -
+
 ## [0.1.0](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/compare/448a6a62866c6c08ea022f0182bec27b069341cc..0.1.0) - 2023-05-06
 #### CI
 - add config for version bump (#6) - ([42c88bb](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/commit/42c88bbc233ab0a49e9f6a8cd11196c6e99d5fc7)) - Villy L
