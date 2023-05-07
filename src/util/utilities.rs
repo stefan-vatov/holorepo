@@ -1,7 +1,7 @@
 use std::{
     collections::{HashMap, HashSet},
     error::Error,
-    path::{Path, PathBuf},
+    path::{Path},
 };
 
 use crate::config::{manager::GlobalConfigManager, parser::Config};
@@ -49,7 +49,7 @@ fn dedupe_vec_tuple(combined: Vec<(String, String)>) -> Vec<(String, String)> {
     unique_map.into_iter().collect()
 }
 
-pub fn load_config(config_location: &PathBuf) -> Result<GlobalConfigManager, Box<dyn Error>> {
+pub fn load_config(config_location: &Path) -> Result<GlobalConfigManager, Box<dyn Error>> {
     let config = load_config_from_file(config_location)?;
 
     Ok(GlobalConfigManager::new(config))
@@ -76,7 +76,7 @@ pub fn load_config_default() -> Result<GlobalConfigManager, Box<dyn Error>> {
     }
 }
 
-fn load_config_from_file(config_location: &PathBuf) -> Result<Config, Box<dyn Error>> {
+fn load_config_from_file(config_location: &Path) -> Result<Config, Box<dyn Error>> {
     let file = std::fs::File::open(config_location)
         .map_err(|e| format!("Could not open config file: {:?} {}", config_location, e))?;
     let config =

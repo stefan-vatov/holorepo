@@ -4,7 +4,7 @@ use rayon::prelude::*;
 use reqwest::blocking;
 use std::{
     fs,
-    path::PathBuf,
+    path::{Path, PathBuf},
     sync::atomic::{AtomicUsize, Ordering},
 };
 
@@ -21,7 +21,7 @@ pub fn new_repo(
 ) -> Result<(), Box<dyn std::error::Error>> {
     let dest = destination.unwrap_or(".".to_string());
 
-    let dir_to_create = PathBuf::new().join(&dest).join(&name);
+    let dir_to_create = PathBuf::new().join(dest).join(&name);
 
     match fs::create_dir(&dir_to_create) {
         Ok(dir) => dir,
@@ -31,14 +31,14 @@ pub fn new_repo(
         ),
     };
 
-    copy_templates(&cfg_mgr, &tags, &dir_to_create);
+    copy_templates(&cfg_mgr, tags, &dir_to_create);
     init_repo(&dir_to_create);
 
     Ok(())
 }
 
-pub fn copy_templates(cfg_mgr: &GlobalConfigManager, tags: &[String], dest: &PathBuf) {
-    let template_pairs = template_and_dest_from_tags(&tags, &cfg_mgr);
+pub fn copy_templates(cfg_mgr: &GlobalConfigManager, tags: &[String], dest: &Path) {
+    let template_pairs = template_and_dest_from_tags(tags, cfg_mgr);
 
     let num_tasks = template_pairs.len();
     let completed_tasks = AtomicUsize::new(0);
@@ -68,44 +68,34 @@ pub fn copy_templates(cfg_mgr: &GlobalConfigManager, tags: &[String], dest: &Pat
                 }
             };
 
-            if body.is_some() {
-                let body_unwrapped = body.unwrap();
+            if let Some(body) = body {
                 let file_dir = format!("{}/{}", dest.to_str().unwrap(), &pair.1);
 
-                match fs::create_dir_all(&file_dir) {
-                    Ok(_d) => {
-                        let filename = format!("{}/{}", &file_dir, filename_from_url(&pair.0));
+                if let Ok(_) = fs::create_dir_all(&file_dir) {
+                    let filename = format!("{}/{}", &file_dir, filename_from_url(&pair.0));
 
-                        match fs::write(&filename, &body_unwrapped) {
-                            Ok(_) => {
-                                // println!("File {} has been written", &filename);
-                                // Update progress bar
-                                progress_bar.inc(1);
-                                let completed = completed_tasks.fetch_add(1, Ordering::Relaxed);
-                                if completed + 1 == num_tasks {
-                                    progress_bar.finish_with_message("All tasks completed.");
-                                }
-                                ()
-                            }
-                            Err(e) => {
-                                println!("Failed saving file {} to disk. {}", &filename, e);
-
-                                ()
+                    match fs::write(&filename, body) {
+                        Ok(_) => {
+                            // println!("File {} has been written", &filename);
+                            // Update progress bar
+                            progress_bar.inc(1);
+                            let completed = completed_tasks.fetch_add(1, Ordering::Relaxed);
+                            if completed + 1 == num_tasks {
+                                progress_bar.finish_with_message("All tasks completed.");
                             }
                         }
-
-                        ()
+                        Err(e) => {
+                            println!("Failed saving file {} to disk. {}", &filename, e);
+                        }
                     }
-                    Err(_) => (),
                 }
-                ()
             }
         });
 }
 
-pub fn init_repo(dest: &PathBuf) {
+pub fn init_repo(dest: &Path) {
     match cmd!("git", "init")
-        .dir(&dest)
+        .dir(dest)
         .stdout_null()
         .stderr_null()
         .run()
