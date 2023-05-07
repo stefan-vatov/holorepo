@@ -1,7 +1,7 @@
 use std::{
     collections::{HashMap, HashSet},
     error::Error,
-    path::{Path},
+    path::Path,
 };
 
 use crate::config::{manager::GlobalConfigManager, parser::Config};
