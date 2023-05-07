@@ -11,7 +11,7 @@ use rayon::prelude::*;
 
 use crate::{
     config::{manager::GlobalConfigManager, parser::RepoConfig},
-    util::operations::{get_dest_from_tags, get_repos_from_tags},
+    util::utilities::{get_dest_from_tags, get_repos_from_tags},
 };
 
 pub fn clone_repo(

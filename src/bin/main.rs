@@ -2,9 +2,10 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 use omnirepo_lib::{
-    clone::operations::clone_repo,
-    run::operations::run_command,
-    util::operations::{load_config, load_config_default},
+    clone::repository_clone::clone_repo,
+    new::project_creation::new_repo,
+    run::runners::run_command,
+    util::utilities::{load_config, load_config_default},
 };
 
 #[derive(Debug, Parser)]
@@ -27,6 +28,21 @@ enum Commands {
     New {
         #[arg(short, long, help = "The name of the repository")]
         name: String,
+
+        #[arg(
+            short,
+            long,
+            use_value_delimiter = true,
+            value_delimiter = ',',
+            help = "The names of the tags to clone"
+        )]
+        tags: Vec<String>,
+        #[arg(
+            short,
+            long,
+            help = "Destination to clone the repositories, current folder by default"
+        )]
+        destination: Option<String>,
     },
     #[command(
         arg_required_else_help = true,
@@ -86,9 +102,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }?;
 
     match args.command {
-        Commands::New { name } => {
+        Commands::New {
+            name,
+            tags,
+            destination,
+        } => {
             println!("Creating new repo: {}", name);
-            //new_repo(name);
+            new_repo(cfg_mgr, &tags, destination, name)?;
         }
         Commands::Clone { tags, destination } => {
             println!("Cloning tags: {:?}", tags);

@@ -14,7 +14,7 @@ categories = ["command-line-utilities"]
 
 [[bin]]
 name = "omnirepo"
-path = "src/main.rs"
+path = "src/bin/main.rs"
 
 [lib]
 name = "omnirepo_lib"
@@ -28,3 +28,4 @@ indicatif = { version = "0.17.3", features = ["rayon"] }
 rayon = "1.7.0"
 serde = { version = "1.0.160", features = ["derive"] }
 serde_yaml = "0.9.21"
+reqwest = { version = "0.11", features = ["json", "blocking"] }
