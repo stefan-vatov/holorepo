@@ -71,7 +71,7 @@ pub fn copy_templates(cfg_mgr: &GlobalConfigManager, tags: &[String], dest: &Pat
             if let Some(body) = body {
                 let file_dir = format!("{}/{}", dest.to_str().unwrap(), &pair.1);
 
-                if let Ok(_) = fs::create_dir_all(&file_dir) {
+                if fs::create_dir_all(&file_dir).is_ok() {
                     let filename = format!("{}/{}", &file_dir, filename_from_url(&pair.0));
 
                     match fs::write(&filename, body) {
