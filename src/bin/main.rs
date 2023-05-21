@@ -1,17 +1,17 @@
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
+use fern::Dispatch;
+use log::info;
 use omnirepo_lib::{
     clone::repository_clone::clone_repo,
     new::project_creation::new_repo,
     run::runners::run_command,
     util::utilities::{load_config, load_config_default},
 };
-use log::info;
-use fern::Dispatch;
 
 fn setup_logger() -> Result<(), Box<dyn std::error::Error>> {
-    let _logger = Dispatch::new()
+    Dispatch::new()
         .format(|out, message, _| out.finish(format_args!("{}", message)))
         .level(log::LevelFilter::Info)
         .chain(std::io::stdout())
