@@ -1,12 +1,24 @@
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
+use fern::Dispatch;
+use log::info;
 use omnirepo_lib::{
     clone::repository_clone::clone_repo,
     new::project_creation::new_repo,
     run::runners::run_command,
     util::utilities::{load_config, load_config_default},
 };
+
+fn setup_logger() -> Result<(), Box<dyn std::error::Error>> {
+    Dispatch::new()
+        .format(|out, message, _| out.finish(format_args!("{}", message)))
+        .level(log::LevelFilter::Info)
+        .chain(std::io::stdout())
+        .apply()?;
+
+    Ok(())
+}
 
 #[derive(Debug, Parser)]
 #[clap(name = "omnirepo", version = "0.1.0", author = "")]
@@ -18,6 +30,9 @@ struct Cli {
         help = "Point to a .omnirepo.yaml or a directory containing config"
     )]
     config: Option<String>,
+
+    #[arg(short, long, help = "Log to file")]
+    verbose: Option<bool>,
 
     #[command(subcommand)]
     command: Commands,
@@ -101,24 +116,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None => load_config_default(),
     }?;
 
+    match args.verbose {
+        Some(true) => setup_logger(),
+        _ => Ok(()),
+    }?;
+
     match args.command {
         Commands::New {
             name,
             tags,
             destination,
         } => {
-            println!("Creating new repo: {}", name);
+            info!("Creating new repo: {}", &name);
             new_repo(cfg_mgr, &tags, destination, name)?;
         }
         Commands::Clone { tags, destination } => {
-            println!("Cloning tags: {:?}", tags);
+            info!("Cloning tags: {:?}", &tags);
             clone_repo(cfg_mgr, &tags, destination)?;
         }
         Commands::Run {
             command,
             destination,
         } => {
-            println!("Running command: {}", command);
+            info!("Running command: {}", &command);
             run_command(command, destination)?;
         }
         Commands::Sync {
@@ -126,12 +146,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             url,
             template_file,
         } => {
-            println!("Syncing file: {}", file);
+            info!("Syncing file: {}", &file);
             if url.is_some() {
-                println!("Syncing from: {}", url.unwrap());
+                info!("Syncing from: {}", &url.unwrap());
             }
             if template_file.is_some() {
-                println!("Syncing with template: {}", template_file.unwrap());
+                info!("Syncing with template: {}", &template_file.unwrap());
             }
             // sync_file(file, url, template_file);
         }

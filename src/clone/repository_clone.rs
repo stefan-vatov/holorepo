@@ -7,6 +7,7 @@ use std::{
 
 use duct::cmd;
 use indicatif::{ProgressBar, ProgressStyle};
+use log::info;
 use rayon::prelude::*;
 
 use crate::{
@@ -22,7 +23,11 @@ pub fn clone_repo(
     let repos = get_repos_from_tags(tags, &cfg_mgr);
     let dests = get_dest_from_tags(tags, &cfg_mgr);
 
+    info!("Cloning repos: {:?}", &repos);
+    info!("Cloning to: {:?}", &dests);
+
     let dest = destination.unwrap_or(".".into());
+    info!("Cloning to: {:?}", &dest);
 
     let num_tasks = repos.len();
     let completed_tasks = AtomicUsize::new(0);
