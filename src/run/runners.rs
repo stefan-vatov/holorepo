@@ -1,6 +1,7 @@
 use crate::config::{manager::RepoConfigManager, parser::RepoConfig};
 use duct::cmd;
 use indicatif::{ProgressBar, ProgressStyle};
+use log::info;
 use rayon::prelude::*;
 use std::{
     io::{Error, ErrorKind},
@@ -13,13 +14,18 @@ pub fn run_command(
     destination: Option<String>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let dest = destination.unwrap_or(".".into());
+    info!("Running command: {}", &command_string);
+
     let config_file = format!("{}/.omni.yaml", &dest);
+    info!("Using config file: {}", &config_file);
+
     let file = std::fs::File::open(&config_file).map_err(|e| {
         format!(
             "Could not open local repo config file: {}, {}",
             &config_file, e
         )
     })?;
+
     let config: RepoConfig = serde_yaml::from_reader(file)
         .map_err(|e| format!("Error parsing repo config YAML file: {}", e))?;
 

@@ -1,5 +1,6 @@
 use duct::cmd;
 use indicatif::{ProgressBar, ProgressStyle};
+use log::info;
 use rayon::prelude::*;
 use reqwest::blocking;
 use std::{
@@ -21,7 +22,12 @@ pub fn new_repo(
 ) -> Result<(), Box<dyn std::error::Error>> {
     let dest = destination.unwrap_or(".".to_string());
 
+    info!("Creating new repo: {:?}", &name);
+    info!("Creating to: {:?}", &dest);
+
     let dir_to_create = PathBuf::new().join(dest).join(&name);
+
+    info!("Creating directory: {:?}", &dir_to_create);
 
     match fs::create_dir(&dir_to_create) {
         Ok(dir) => dir,
@@ -32,7 +38,10 @@ pub fn new_repo(
     };
 
     copy_templates(&cfg_mgr, tags, &dir_to_create);
+    info!("Templates copied to {:?}", &dir_to_create);
+
     init_repo(&dir_to_create);
+    info!("Git repo initialized in {:?}", &dir_to_create);
 
     Ok(())
 }
