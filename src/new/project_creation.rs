@@ -85,7 +85,7 @@ pub fn copy_templates(cfg_mgr: &GlobalConfigManager, tags: &[String], dest: &Pat
 
                     match fs::write(&filename, body) {
                         Ok(_) => {
-                            // println!("File {} has been written", &filename);
+                            println!("File {} has been written", &filename);
                             // Update progress bar
                             progress_bar.inc(1);
                             let completed = completed_tasks.fetch_add(1, Ordering::Relaxed);

@@ -9,6 +9,8 @@ use std::{
     sync::atomic::{AtomicUsize, Ordering},
 };
 
+use prettytable::{row, Table};
+
 pub fn run_command(
     command_string: String,
     destination: Option<String>,
@@ -68,11 +70,25 @@ pub fn run_command(
         })
         .collect();
 
+    let mut table = Table::new();
+    table.add_row(row!["No", "Fail", "Error Message"]);
+
+    let mut error_count = 0;
     for res in &result {
         match res {
-            Ok(_out) => (),
-            Err(_e) => (),
+            Ok(_out) => {}
+            Err(e) => {
+                error_count += 1;
+                table.add_row(row![error_count, "true", e.to_string()]);
+            }
         }
+    }
+
+    if error_count > 0 {
+        println!();
+        println!();
+        println!();
+        table.printstd();
     }
 
     Ok(())

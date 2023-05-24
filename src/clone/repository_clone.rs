@@ -8,6 +8,7 @@ use std::{
 use duct::cmd;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::info;
+use prettytable::{row, Table};
 use rayon::prelude::*;
 
 use crate::{
@@ -63,16 +64,30 @@ pub fn clone_repo(
         })
         .collect();
 
+    let mut table = Table::new();
+    table.add_row(row!["No", "Fail", "Error Message"]);
+
+    let mut error_count = 0;
     for res in &clone_result {
         match res {
             Ok(_out) => (),
-            Err(_e) => (),
+            Err(e) => {
+                error_count += 1;
+                table.add_row(row![error_count, "true", e.to_string()]);
+            }
         }
     }
 
     let rpc = serde_yaml::to_string(&RepoConfig::new(dests))
         .expect("Failed to serialise local multirepo config.");
     fs::write(format!("{}/.omni.yaml", &dest), rpc)?;
+
+    if error_count > 0 {
+        println!();
+        println!();
+        println!();
+        table.printstd();
+    }
 
     Ok(())
 }
