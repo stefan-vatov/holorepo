@@ -33,7 +33,7 @@ pub fn template_and_dest_from_tags(
     )
 }
 
-fn dedupe_vec_string(combined: Vec<String>) -> Vec<String> {
+pub fn dedupe_vec_string(combined: Vec<String>) -> Vec<String> {
     let unique: HashSet<String> = combined.into_iter().collect();
 
     unique.into_iter().collect()

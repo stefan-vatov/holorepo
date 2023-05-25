@@ -51,11 +51,11 @@ enum Commands {
             value_delimiter = ',',
             help = "The names of the tags to clone"
         )]
-        tags: Vec<String>,
+        tags: Option<Vec<String>>,
         #[arg(
             short,
             long,
-            help = "Destination to clone the repositories, current folder by default"
+            help = "Destination to create new repository, current folder by default"
         )]
         destination: Option<String>,
     },
@@ -128,7 +128,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             destination,
         } => {
             info!("Creating new repo: {}", &name);
-            new_repo(cfg_mgr, &tags, destination, name)?;
+            new_repo(cfg_mgr, tags, destination, name)?;
         }
         Commands::Clone { tags, destination } => {
             info!("Cloning tags: {:?}", &tags);
