@@ -11,7 +11,7 @@ use std::{
 
 use crate::{
     config::manager::GlobalConfigManager,
-    util::utilities::{filename_from_url, template_and_dest_from_tags, dedupe_vec_string},
+    util::utilities::{dedupe_vec_string, filename_from_url, template_and_dest_from_tags},
 };
 
 pub fn new_repo(
@@ -118,7 +118,7 @@ pub fn init_repo(dest: &Path) {
             println!();
             println!();
             println!("Repository created at {:?}", dest);
-        },
+        }
         Err(e) => println!("Error initialising repository at {:?}, {:?}", dest, e),
     }
 }
