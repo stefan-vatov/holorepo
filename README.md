@@ -61,28 +61,54 @@ Create a `.omnirepo.yaml` file in your user's home directory with the following 
 
 ```yml
 ---
+
 repositories:
   - name: Glimmer config
-    url: <valid_clone_url>
+    url: <valid-clone-url>
     dest: glimmer_config
     tags:
       - config
       - ansible
-      - dotfiles
   - name: Private dotfiles
-    url: <valid_clone_url>
+    url: <valid-clone-url>
     dest: dotfiles
     tags:
-      - dotfiles
       - config
+      - dotfiles
+
+templates:
+  - name: pre-commit
+    url: https://raw.githubusercontent.com/stefan-vatov/omni-templates/main/default/.pre-commit-config.yaml
+    kind: File
+    dest: "."
+    tags:
+      - default
+      - ci
+  - name: .gitignore
+    url: https://raw.githubusercontent.com/stefan-vatov/omni-templates/main/default/.gitignore
+    kind: File
+    dest: "."
+    tags:
+      - default
+  - name: GitHub Workflows
+    url: https://raw.githubusercontent.com/stefan-vatov/omni-templates/main/github_workflows
+    kind: Dir
+    included_files:
+      - file_name: pre-commit-hooks.yml
+        dest: .github/workflows
+    tags:
+      - ci
+
 ```
 
 ## Commands
 
 ### new
 
-(TODO)
 Create a new repository.
+
+Passing tags with `-t` for the new repo is optional.
+Any files with the `default` tag _will be_ automatically added.
 
 ### clone
 

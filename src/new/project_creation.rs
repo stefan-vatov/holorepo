@@ -11,16 +11,17 @@ use std::{
 
 use crate::{
     config::manager::GlobalConfigManager,
-    util::utilities::{filename_from_url, template_and_dest_from_tags},
+    util::utilities::{dedupe_vec_string, filename_from_url, template_and_dest_from_tags},
 };
 
 pub fn new_repo(
     cfg_mgr: GlobalConfigManager,
-    tags: &[String],
+    tags: Option<Vec<String>>,
     destination: Option<String>,
     name: String,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let dest = destination.unwrap_or(".".to_string());
+    let mut valid_tags = tags.unwrap_or(vec![]);
 
     info!("Creating new repo: {:?}", &name);
     info!("Creating to: {:?}", &dest);
@@ -37,7 +38,11 @@ pub fn new_repo(
         ),
     };
 
-    copy_templates(&cfg_mgr, tags, &dir_to_create);
+    valid_tags.push("default".to_owned());
+
+    let unique_tags = dedupe_vec_string(valid_tags);
+
+    copy_templates(&cfg_mgr, &unique_tags, &dir_to_create);
     info!("Templates copied to {:?}", &dir_to_create);
 
     init_repo(&dir_to_create);
@@ -65,13 +70,13 @@ pub fn copy_templates(cfg_mgr: &GlobalConfigManager, tags: &[String], dest: &Pat
                 Ok(res) => match res.text() {
                     Ok(text) => Some(text),
                     Err(_) => {
-                        println!("Failed extracting contents from response of {}", &pair.0);
+                        info!("Failed extracting contents from response of {}", &pair.0);
 
                         None
                     }
                 },
                 Err(e) => {
-                    println!("Failed fetching {}. {}", &pair.0, e);
+                    info!("Failed fetching {}. {}", &pair.0, e);
 
                     None
                 }
@@ -85,7 +90,7 @@ pub fn copy_templates(cfg_mgr: &GlobalConfigManager, tags: &[String], dest: &Pat
 
                     match fs::write(&filename, body) {
                         Ok(_) => {
-                            println!("File {} has been written", &filename);
+                            info!("File {} has been written", &filename);
                             // Update progress bar
                             progress_bar.inc(1);
                             let completed = completed_tasks.fetch_add(1, Ordering::Relaxed);
@@ -94,7 +99,7 @@ pub fn copy_templates(cfg_mgr: &GlobalConfigManager, tags: &[String], dest: &Pat
                             }
                         }
                         Err(e) => {
-                            println!("Failed saving file {} to disk. {}", &filename, e);
+                            info!("Failed saving file {} to disk. {}", &filename, e);
                         }
                     }
                 }
@@ -109,7 +114,11 @@ pub fn init_repo(dest: &Path) {
         .stderr_null()
         .run()
     {
-        Ok(output) => println!("Repository created at {:?}. {:?}", dest, output),
+        Ok(_output) => {
+            println!();
+            println!();
+            println!("Repository created at {:?}", dest);
+        }
         Err(e) => println!("Error initialising repository at {:?}, {:?}", dest, e),
     }
 }
