@@ -50,8 +50,8 @@ pub fn run_command(
             let cmd_dir = format!("{}/{}", &dest, &dir);
             let output = cmd("sh", &["-c", &command_string])
                 .dir(&cmd_dir)
-                .stdout_null()
-                .stderr_null()
+                .stdout_capture()
+                .stderr_capture()
                 .run();
 
             // Update progress bar
@@ -76,10 +76,14 @@ pub fn run_command(
     let mut error_count = 0;
     for res in &result {
         match res {
-            Ok(_out) => {}
+            Ok(out) => {
+                info!("{:?}", out.stdout);
+                info!("{:?}", out.stderr);
+            }
             Err(e) => {
                 error_count += 1;
-                table.add_row(row![error_count, "true", e.to_string()]);
+                table.add_row(row![error_count, "true", e]);
+                info!("{:?}", e);
             }
         }
     }

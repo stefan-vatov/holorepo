@@ -38,6 +38,7 @@ pub struct Templates {
 #[derive(Deserialize, Debug, Serialize)]
 pub struct Template {
     pub name: String,
+    pub id: String,
     pub url: String,
     pub kind: TemplateType,
     pub dest: Option<String>,
@@ -48,6 +49,7 @@ pub struct Template {
 #[derive(Deserialize, Debug, Serialize)]
 pub struct IncludedFile {
     pub file_name: String,
+    pub id: String,
     pub dest: String,
 }
 
@@ -55,4 +57,8 @@ pub struct IncludedFile {
 pub enum TemplateType {
     File,
     Dir,
+}
+
+pub struct GlobalConfig {
+    pub log: bool,
 }

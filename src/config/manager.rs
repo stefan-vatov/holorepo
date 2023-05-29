@@ -1,7 +1,14 @@
-use super::parser::{Config, RepoConfig};
+use std::sync::Mutex;
+
+use super::parser::{Config, GlobalConfig, RepoConfig};
+
+use once_cell::sync::Lazy;
+
+pub static GLOBAL_CONFIG: Lazy<Mutex<GlobalConfig>> =
+    Lazy::new(|| Mutex::new(GlobalConfig { log: false }));
 
 pub struct GlobalConfigManager {
-    config: Config,
+    pub config: Config,
 }
 
 impl GlobalConfigManager {

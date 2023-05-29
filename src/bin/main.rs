@@ -5,8 +5,10 @@ use fern::Dispatch;
 use log::info;
 use omnirepo_lib::{
     clone::repository_clone::clone_repo,
+    config::manager::GLOBAL_CONFIG,
     new::project_creation::new_repo,
     run::runners::run_command,
+    sync::synchronization::sync_file,
     util::utilities::{load_config, load_config_default},
 };
 
@@ -105,6 +107,12 @@ enum Commands {
         url: Option<String>,
         #[arg(short, long, help = "Template file for syncing")]
         template_file: Option<String>,
+        #[arg(
+            short,
+            long,
+            help = "Destination to clone the repositories, current folder by default"
+        )]
+        destination: Option<String>,
     },
 }
 
@@ -116,10 +124,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None => load_config_default(),
     }?;
 
-    match args.verbose {
-        Some(true) => setup_logger(),
-        _ => Ok(()),
-    }?;
+    if let Some(true) = args.verbose {
+        match setup_logger() {
+            Ok(_) => info!("Logger set up."),
+            Err(e) => panic!("Failed to setup logger: {}", e),
+        }
+        if let Ok(mut config) = GLOBAL_CONFIG.lock() {
+            config.log = true
+        }
+    };
 
     match args.command {
         Commands::New {
@@ -145,15 +158,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             file,
             url,
             template_file,
+            destination,
         } => {
             info!("Syncing file: {}", &file);
-            if url.is_some() {
-                info!("Syncing from: {}", &url.unwrap());
-            }
-            if template_file.is_some() {
-                info!("Syncing with template: {}", &template_file.unwrap());
-            }
-            // sync_file(file, url, template_file);
+
+            sync_file(cfg_mgr, file, url, template_file, destination);
         }
     }
 
