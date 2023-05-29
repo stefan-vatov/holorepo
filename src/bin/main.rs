@@ -129,7 +129,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Ok(_) => info!("Logger set up."),
             Err(e) => panic!("Failed to setup logger: {}", e),
         }
-        if let Ok(mut config) = GLOBAL_CONFIG.lock() { config.log = true }
+        if let Ok(mut config) = GLOBAL_CONFIG.lock() {
+            config.log = true
+        }
     };
 
     match args.command {
