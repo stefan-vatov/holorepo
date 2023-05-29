@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [0.6.0](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/compare/0.5.0..0.6.0) - 2023-05-29
+#### Features
+- **(o2-53)** update targeted file with template and url (#11) - ([545e634](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/commit/545e634c7e0e973332b7d0338928b97c3b993afe)) - [@stefan-vatov](https://https://github.com/stefan-vatov/omnirepo/stefan-vatov)
+
+- - -
+
 ## [0.5.0](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/compare/0.4.0..0.5.0) - 2023-05-25
 #### Features
 - **(o2-46)** implement repo creation based on tags (#10) - ([61b10df](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/commit/61b10dff7aa3bc8a088e7fe43cfd0fd94ed0e5ce)) - [@stefan-vatov](https://https://github.com/stefan-vatov/omnirepo/stefan-vatov)
