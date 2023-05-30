@@ -41,7 +41,7 @@ Omnirepo is a command-line tool for managing multiple Git repositories. It allow
 ```plaintext
 A tool for managing multiple git repositories
 
-Usage: omnirepo <COMMAND>
+Usage: omnirepo [OPTIONS] <COMMAND>
 
 Commands:
   new    Create a new repository
@@ -51,8 +51,10 @@ Commands:
   help   Print this message or the help of the given subcommand(s)
 
 Options:
-  -h, --help     Print help
-  -V, --version  Print version
+  -c, --config <CONFIG>    Point to a .omnirepo.yaml or a directory containing config
+  -v, --verbose <VERBOSE>  Log to file [possible values: true, false]
+  -h, --help               Print help
+  -V, --version            Print version
 ```
 
 ### Config File
@@ -110,18 +112,67 @@ Create a new repository.
 Passing tags with `-t` for the new repo is optional.
 Any files with the `default` tag _will be_ automatically added.
 
+
+```plaintext
+Create a new repository
+
+Usage: omnirepo new [OPTIONS] --name <NAME>
+
+Options:
+  -n, --name <NAME>                The name of the repository
+  -t, --tags <TAGS>                The names of the tags to clone
+  -d, --destination <DESTINATION>  Destination to create new repository, current folder by default
+  -h, --help                       Print help
+```
+
 ### clone
 
 Clone a group of repositories based on tags.
+
+```plaintext
+Clone a group of repositories based on tags
+
+Usage: omnirepo clone [OPTIONS]
+
+Options:
+  -t, --tags <TAGS>                The names of the tags to clone
+  -d, --destination <DESTINATION>  Destination to clone the repositories, current folder by default
+  -h, --help                       Print help
+```
 
 ### run
 
 Run a command in each repository.
 
+```plaintext
+Run a command in each repository
+
+Usage: omnirepo run [OPTIONS] --command <COMMAND>
+
+Options:
+  -c, --command <COMMAND>          The command to run
+  -d, --destination <DESTINATION>  Destination to folder where the repos were cloned, current folder by default.
+  -h, --help                       Print help
+```
+
 ### sync
 
-(TODO)
 Sync a file across all repositories.
+If the file does not exist it will be created.
+
+```plaintext
+Sync a file across all repositories
+
+Usage: omnirepo sync [OPTIONS] --file <FILE>
+
+Options:
+  -f, --file <FILE>                    The file to sync
+  -u, --url <URL>                      Source file for syncing from URL
+  -s, --source-file <SOURCE_FILE>      Local source file for syncing
+  -t, --template-file <TEMPLATE_FILE>  Template file for syncing
+  -d, --destination <DESTINATION>      Destination to folder where the repos were cloned, current folder by default.
+  -h, --help                           Print help
+```
 
 ## Contributing
 
