@@ -75,14 +75,19 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Get latest tag
+      id: latest_tag
+      run: |
+        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        echo "::set-output name=tag::$(git describe --tags $(git rev-list --tags --max-count=1))"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v${{ github.run_number }}
-        release_name: Release v${{ github.run_number }}
+        tag_name: v${{ steps.latest_tag.outputs.tag }}
+        release_name: Release v${{ steps.latest_tag.outputs.tag }}
         draft: false
         prerelease: false
 
