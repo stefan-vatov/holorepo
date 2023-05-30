@@ -75,23 +75,19 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Install GitHub CLI
-      run: |
-        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-        sudo apt-add-repository https://cli.github.com/packages
-        sudo apt update
-        sudo apt install gh
     - name: Get latest tag
       id: latest_tag
-      run: echo "::set-output name=tag::$(gh release list --limit 1 | cut -f1)"
+      run: |
+        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        echo "::set-output name=tag::$(git describe --tags $(git rev-list --tags --max-count=1))"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.latest_tag.outputs.tag }}
-        release_name: Release ${{ steps.latest_tag.outputs.tag }}
+        tag_name: v${{ steps.latest_tag.outputs.tag }}
+        release_name: Release v${{ steps.latest_tag.outputs.tag }}
         draft: false
         prerelease: false
 
