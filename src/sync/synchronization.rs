@@ -1,5 +1,5 @@
 use std::{
-    fs,
+    fs::{self},
     io::{Error, ErrorKind},
     sync::atomic::{AtomicUsize, Ordering},
 };
@@ -22,6 +22,7 @@ pub fn sync_file(
     url: Option<String>,
     template_id: Option<String>,
     destination: Option<String>,
+    source_file: Option<String>,
 ) {
     let dest = destination.unwrap_or(".".into());
     info!("Destination is: {}", &dest);
@@ -33,15 +34,33 @@ pub fn sync_file(
         _ => None,
     };
 
-    if url.is_none() {
-        panic!("Could not find url for template.")
+    if url.is_none() && source_file.is_none() {
+        panic!("Could not find url or source file for template.")
     }
 
-    let valid_url = url.unwrap();
+    let template_contents = match (url, source_file) {
+        (Some(_), Some(_)) => {
+            panic!("Pass only one template source flag");
+        }
+        (Some(url), _) => {
+            let valid_url = url;
 
-    info!("Url to fetch tempalte from is: {}", &valid_url);
+            info!("Url to fetch template from is: {}", &valid_url);
 
-    let template_contents = fetch_template(&valid_url);
+            fetch_template(&valid_url)
+        }
+        (None, Some(source_file)) => {
+            match fs::read_to_string(format!("{}/{}", &dest, &source_file)) {
+                Ok(contents) => Some(contents),
+                Err(e) => {
+                    info!("{}", e);
+
+                    None
+                }
+            }
+        }
+        _ => None,
+    };
 
     if template_contents.is_none() {
         panic!("Could not fetch contents for template");

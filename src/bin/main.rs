@@ -92,7 +92,7 @@ enum Commands {
         #[arg(
             short,
             long,
-            help = "Destination to clone the repositories, current folder by default"
+            help = "Destination to folder where the repos were cloned, current folder by default."
         )]
         destination: Option<String>,
     },
@@ -103,14 +103,16 @@ enum Commands {
     Sync {
         #[arg(short, long, help = "The file to sync")]
         file: String,
-        #[arg(short, long, help = "Source file for syncing")]
+        #[arg(short, long, help = "Source file for syncing from URL")]
         url: Option<String>,
+        #[arg(short, long, help = "Local source file for syncing ")]
+        source_file: Option<String>,
         #[arg(short, long, help = "Template file for syncing")]
         template_file: Option<String>,
         #[arg(
             short,
             long,
-            help = "Destination to clone the repositories, current folder by default"
+            help = "Destination to folder where the repos were cloned, current folder by default."
         )]
         destination: Option<String>,
     },
@@ -158,11 +160,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             file,
             url,
             template_file,
+            source_file,
             destination,
         } => {
             info!("Syncing file: {}", &file);
 
-            sync_file(cfg_mgr, file, url, template_file, destination);
+            sync_file(cfg_mgr, file, url, template_file, destination, source_file);
         }
     }
 
