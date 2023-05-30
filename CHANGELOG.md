@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [0.8.1](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/compare/0.8.0..0.8.1) - 2023-05-30
+#### Bug Fixes
+- use gh token (#14) - ([c74ed31](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/commit/c74ed31cabaddea7daf71ac40027cccda26fa2ba)) - [@stefan-vatov](https://https://github.com/stefan-vatov/omnirepo/stefan-vatov)
+
+- - -
+
 ## [0.8.0](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/compare/0.7.0..0.8.0) - 2023-05-30
 #### Features
 - **(o2-52)** setup binary builds (#13) - ([c35615b](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/commit/c35615b35cce36f9249ea7e08de42cc66f5e7079)) - [@stefan-vatov](https://https://github.com/stefan-vatov/omnirepo/stefan-vatov)
