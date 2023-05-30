@@ -30,7 +30,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: x86_64-unknown-linux-gnu
-        path: target/x86_64-unknown-linux-gnu/release/***REMOVED***
+        path: target/x86_64-unknown-linux-gnu/release/omnirepo
 
   build_universal:
     runs-on: macos-latest
@@ -60,14 +60,14 @@ jobs:
     - name: Create universal binary
       run: |
         mkdir -p target/universal/release
-        lipo -create -output target/universal/release/***REMOVED*** \
-            target/x86_64-apple-darwin/release/***REMOVED*** \
-            target/aarch64-apple-darwin/release/***REMOVED***
+        lipo -create -output target/universal/release/omnirepo \
+            target/x86_64-apple-darwin/release/omnirepo \
+            target/aarch64-apple-darwin/release/omnirepo
     - name: Upload release binary
       uses: actions/upload-artifact@v2
       with:
         name: universal-darwin
-        path: target/universal/release/***REMOVED***
+        path: target/universal/release/omnirepo
 
   create_release:
     runs-on: ubuntu-latest
@@ -104,8 +104,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.REL_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: release/linux/***REMOVED***
-        asset_name: ***REMOVED***-x86_64-unknown-linux-gnu
+        asset_path: release/linux/omnirepo
+        asset_name: omnirepo-x86_64-unknown-linux-gnu
         asset_content_type: application/octet-stream
 
     - name: Upload universal binary
@@ -114,6 +114,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.REL_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: release/dar/***REMOVED***
-        asset_name: ***REMOVED***-universal-darwin
+        asset_path: release/dar/omnirepo
+        asset_name: omnirepo-universal-darwin
         asset_content_type: application/octet-stream
