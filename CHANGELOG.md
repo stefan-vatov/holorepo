@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [0.7.0](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/compare/0.6.0..0.7.0) - 2023-05-30
+#### Features
+- **(o2-55)** update targeted file with a local file (#12) - ([dc1f861](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/commit/dc1f86106ed35df977cb854aeca8657db87ce01b)) - [@stefan-vatov](https://https://github.com/stefan-vatov/omnirepo/stefan-vatov)
+
+- - -
+
 ## [0.6.0](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/compare/0.5.0..0.6.0) - 2023-05-29
 #### Features
 - **(o2-53)** update targeted file with template and url (#11) - ([545e634](https://https://github.com/stefan-vatov/omnirepo/stefan.vatov/omnirepo/commit/545e634c7e0e973332b7d0338928b97c3b993afe)) - [@stefan-vatov](https://https://github.com/stefan-vatov/omnirepo/stefan-vatov)
